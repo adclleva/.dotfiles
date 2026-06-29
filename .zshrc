@@ -5,28 +5,23 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# for redi health's redi-admin app
+export NPM_TOKEN=""
+
+# for redi health's provider-api app
+export JAVA_HOME=`/usr/libexec/java_home -v 17.0.13`
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/arvinlleva/.oh-my-zsh"
-
-# For NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-# For mysql 
-export PATH=${PATH}:/usr/local/mysql/bin
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_MODE="nerdfont-complete"
-POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
-
-ENABLE_CORRECTION="true"
 
 
 # Set list of themes to pick from when loading at random
@@ -42,14 +37,13 @@ ENABLE_CORRECTION="true"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -61,11 +55,12 @@ ENABLE_CORRECTION="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -90,12 +85,14 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    dirhistory
-    history
-)
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-history-substring-search
+  auto-notify
+  dirhistory
+  history
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -124,27 +121,145 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias dc="docker-compose"
-alias dcu="docker-compose up"
-alias dcd="docker-compose down"
-alias dcr="docker-compose run --rm"
-
 alias gaa="git add -A"
+alias gbd="git branch -D"
+alias gc="git clone"
+alias gcam= "git commit --amend -m "
 alias gcm="git commit -m"
 alias gco="git checkout"
 alias gcob="git checkout -b"
 alias gf="git fetch"
 alias gl="git log"
 alias gp="git push"
+alias gpfwl="git push --force-with-lease"
 alias gpl="git pull"
 alias grh="git reset --hard"
 alias gs="git status"
+alias gssu= "git stash save -u"
+alias gsu="git stash -u"
+alias gsa="git stash apply"
 
+alias ni="npm install"
+alias nrd="npm run dev"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+alias p="pnpm"
+alias pb="pnpm build"
+alias pd="pnpm dev"
+alias pi="pnpm install"
+alias pid="pnpm install -D"
+alias pl="pnpm link"
+alias plg="pnpm link -g"
+alias ppf="pnpm prettier:fix"
+alias ps="pnpm storybook"
+alias pt="pnpm test"
+alias pw="pnpm watch"
+
+alias ys="yarn start"
+alias yi="yarn install"
+# these are for redi health's redi-mobile app
+alias yc="yarn clean"
+alias yt="yarn test"
+alias yl="yarn lint"
+alias ypc="yarn prettier:check"
+alias ysat="yarn setup:android-tunnel"
+alias adbrt3="adb reverse tcp:3000 tcp:3000"
+alias yli="yarn local:ios"
+alias ysi="yarn staging:ios"
+alias ypi="yarn production:ios"
+alias yla="yarn local:android"
+alias ysa="yarn staging:android"
+alias ypa="yarn production:android"
+alias yes="yarn expo start"
+
+alias dcd="docker-compose down"
+alias dcs="docker-compose stop"
+alias dcu="docker-compose up"
+
+alias bi="bundle install"
+
+alias rc="rails c"
+alias rbca="rubocop -A"
+alias rdbr="rails db:reset"
+alias rdbrb="rails db:rollback"
+alias rdbm="rails db:migrate"
+alias rdbms="rails db:migrate:status"
+alias rdbs="rails db:seed"
+alias rdbsr="rails db:seed:replant"
+alias rs="rails s"
+alias rsb="rails s -b 0.0.0.0"
+alias rgm="rails g migration"
+
+alias ber="bundle exec rspec"
+alias be="bundle exec"
+alias bes="bundle exec sidekiq"
+
+alias cz="code ~/.zshrc"
+alias cuz="cursor ~/.zshrc"
+alias sz="source ~/.zshrc"
+alias c="code"
+alias cu="cursor"
+
+alias cl="claude"
+alias clr="claude --resume"
+
+alias scd="scrcpy -d" # to connect android via usb
+alias scd="scrcpy -e" # to connect android via tcp/i (wifi)
+
+alias c.="code ."
+alias cu.="cursor ."
+
+# for git-extras
+alias gdmb="git delete-merged-branches"
+alias grpo="git remote prune origin"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval "$(rbenv init -)"
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# For Redi Health's redi-mobile app
+# Tweaking the .zshrc file can make switching between projects a bit easier.
+# For example, some projects at Redi may be using node version 20 and others may be on version 18.
+# We can add a line to our zshrc to automatically have nvm switch for us whenever we cd into one of these projects.
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+eval "$(rbenv init - zsh)"
+
+# Fix for OpenSSL 3.6.0 SSL certificate CRL check issue
+# See: https://github.com/ruby/openssl/issues/949
+export RUBYOPT="-r$HOME/.rubyopenssl_default_store.rb $RUBYOPT"
+
+load-nvmrc() {
+  [[ -a .nvmrc ]] || return
+
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use --silent >/dev/null
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    nvm use --silent default >/dev/null
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+# Created by `pipx` on 2024-12-20 21:02:38
+export PATH="$PATH:/Users/arvinlleva/.local/bin"
+
+# pnpm
+export PNPM_HOME="/Users/arvinlleva/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
