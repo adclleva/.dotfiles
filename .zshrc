@@ -8,9 +8,6 @@ fi
 # for redi health's redi-admin app
 export NPM_TOKEN=""
 
-# for redi health's provider-api app
-export JAVA_HOME=`/usr/libexec/java_home -v 17.0.13`
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -22,7 +19,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -92,7 +88,7 @@ plugins=(
   auto-notify
   dirhistory
   history
-  )
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -124,7 +120,7 @@ source $ZSH/oh-my-zsh.sh
 alias gaa="git add -A"
 alias gbd="git branch -D"
 alias gc="git clone"
-alias gcam= "git commit --amend -m "
+alias gcam='git commit --amend -m'
 alias gcm="git commit -m"
 alias gco="git checkout"
 alias gcob="git checkout -b"
@@ -135,7 +131,7 @@ alias gpfwl="git push --force-with-lease"
 alias gpl="git pull"
 alias grh="git reset --hard"
 alias gs="git status"
-alias gssu= "git stash save -u"
+alias gssu='git stash save -u'
 alias gsu="git stash -u"
 alias gsa="git stash apply"
 
@@ -195,15 +191,15 @@ alias bes="bundle exec sidekiq"
 
 alias cz="code ~/.zshrc"
 alias cuz="cursor ~/.zshrc"
-alias sz="source ~/.zshrc"
+alias szl="source ~/.zshrc.local"
 alias c="code"
 alias cu="cursor"
 
 alias cl="claude"
 alias clr="claude --resume"
 
-alias scd="scrcpy -d" # to connect android via usb
-alias scd="scrcpy -e" # to connect android via tcp/i (wifi)
+alias scdu="scrcpy -d" # to connect android via usb
+alias scdw="scrcpy -e" # to connect android via tcp/ip (wifi)
 
 alias c.="code ."
 alias cu.="cursor ."
@@ -212,9 +208,9 @@ alias cu.="cursor ."
 alias gdmb="git delete-merged-branches"
 alias grpo="git remote prune origin"
 
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-eval "$(rbenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -224,14 +220,6 @@ export NVM_DIR="$HOME/.nvm"
 # Tweaking the .zshrc file can make switching between projects a bit easier.
 # For example, some projects at Redi may be using node version 20 and others may be on version 18.
 # We can add a line to our zshrc to automatically have nvm switch for us whenever we cd into one of these projects.
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
-eval "$(rbenv init - zsh)"
-
-# Fix for OpenSSL 3.6.0 SSL certificate CRL check issue
-# See: https://github.com/ruby/openssl/issues/949
-export RUBYOPT="-r$HOME/.rubyopenssl_default_store.rb $RUBYOPT"
-
 load-nvmrc() {
   [[ -a .nvmrc ]] || return
 
@@ -253,6 +241,17 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
+eval "$(rbenv init - zsh)"
+
+# Fix for OpenSSL 3.6.0 SSL certificate CRL check issue
+# See: https://github.com/ruby/openssl/issues/949
+export RUBYOPT="-r$HOME/.rubyopenssl_default_store.rb $RUBYOPT"
+
+# Java + Android (redi-mobile / provider-api)
+export JAVA_HOME=$(/usr/libexec/java_home -v 17 2>/dev/null)
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+
 # Created by `pipx` on 2024-12-20 21:02:38
 export PATH="$PATH:/Users/arvinlleva/.local/bin"
 
@@ -263,3 +262,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# Machine-specific secrets (not in git) — see ~/.zshrc.local
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
