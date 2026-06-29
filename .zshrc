@@ -188,7 +188,7 @@ alias bes="bundle exec sidekiq"
 
 alias cz="code ~/.zshrc"
 alias cuz="cursor ~/.zshrc"
-alias szl="source ~/.zshrc.local"
+alias sz="source ~/.zshrc"
 alias c="code"
 alias cu="cursor"
 
